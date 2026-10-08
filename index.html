@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .total {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .total h2 {
+            font-size: 20px;
+        }
+
+        #expenseList {
+            margin-top: 20px;
+        }
+
+        .expense {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .delete-btn {
+            width: auto;
+            margin: 0;
+            padding: 8px 12px;
+            background: #dc2626;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                margin: 15px auto;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .expense {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Expense Tracker</h1>
+
+        <label>Expense Name</label>
+        <input type="text" id="expenseName" placeholder="Example: Food">
+
+        <label>Amount</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+
+        <button onclick="addExpense()">Add Expense</button>
+
+        <div class="total">
+            <h2>Total Expense: ₹<span id="total">0</span></h2>
+        </div>
+
+        <div id="expenseList"></div>
+
+    </div>
+
+
+    <script>
+
+        let total = 0;
+
+        function addExpense() {
+
+            let name = document.getElementById("expenseName").value;
+            let amount = Number(document.getElementById("amount").value);
+
+            if (name === "" || amount <= 0) {
+                alert("Please enter expense name and amount.");
+                return;
+            }
+
+            total = total + amount;
+
+            document.getElementById("total").innerHTML = total;
+
+            let expenseList = document.getElementById("expenseList");
+
+            let expense = document.createElement("div");
+
+            expense.className = "expense";
+
+            expense.innerHTML = `
+                <div class="expense-info">
+                    <strong>${name}</strong>
+                    ₹${amount}
+                </div>
+
+                <button class="delete-btn" onclick="deleteExpense(this, ${amount})">
+                    Delete
+                </button>
+            `;
+
+            expenseList.appendChild(expense);
+
+            document.getElementById("expenseName").value = "";
+            document.getElementById("amount").value = "";
+        }
+
+
+        function deleteExpense(button, amount) {
+
+            total = total - amount;
+
+            document.getElementById("total").innerHTML = total;
+
+            button.parentElement.remove();
+        }
+
+    </script>
+
+</body>
+</html>
